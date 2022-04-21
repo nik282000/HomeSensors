@@ -14,14 +14,14 @@ def debug_print(message):
 
 today = datetime.now().strftime('%Y_%m_%d')
 now = datetime.now().strftime('%Y_%m_%d_%H:%M')
-today_filename = 'measurements_' + today + '.csv' # Use Full Path
+today_filename = '/var/homesensors/measurements/' + 'measurements_' + today + '.csv' # Change this line to where use Full Path
 
 debug_print('Debug Print is ON.')
 debug_print(today)
 debug_print(now)
 debug_print(today_filename)
 
-sensor_list = [
+sensor_list = [ # Adjust this list to include the name and IP addresses of your devices
     {
         'ip':'192.168.0.220',
         'name':'Sensor 0'
@@ -42,11 +42,11 @@ sensor_list = [
 
 for i in range(len(sensor_list)):
     try:
-        raw = requests.get('http://' + sensor_list[i]['ip']) # Sensors should return temperature and humidity 'tt.tt,hh.hh'
+        raw = requests.get('http://' + sensor_list[i]['ip'], timeout=30) # Sensors should return temperature and humidity 'tt.tt,hh.hh'
         reading = raw.text.split(',')
     except: # If one of the sensors fails to respond use '0.0' as dummy data
         reading = ['0.0', '0.0']
-        print(sensor_list[i]['name'] + ' is missing.')
+        print(now + ' ' + sensor_list[i]['name'] + ' is missing.')
     sensor_list[i]['temperature'] = reading[0]
     sensor_list[i]['humidity'] = reading[1]
 
