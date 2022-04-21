@@ -7,4 +7,7 @@ ESP8266_AHTx0.ino Runs on an ESP8266 with an AHT10 or AHT20 device conencted to 
 
 homeSensors.py Reads from each sensor (listed in sensor_list) and then appends the data to a csv file /var/homesensors/measurements/measurements_YYYY_MM_DD.csv. If a csv for today doesn't exist it will be made. The first line will be labels for the columns: Datetime,SensorName0Temperature,SensorName0Humidity... If a sensor is unreachable or takes longer than 30s to respond the script will substitute 0.0,0.0 for the missing data and print a message. I append those messages to /var/homesensors/logs/errors but thats just me.
 
+homeSensors.py is called once a minute using a crontab line similar to this:
+* *	* * *	homesensors	/path/to/homeSensors.py >> /var/homesensors/logs/homeSensors.log
+
 The file measurements_2022_01_22.csv is an example output from homeSensor.py for a whole day.
